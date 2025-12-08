@@ -7,7 +7,7 @@ const projects = [
         title: "Breast Cancer Decision Tree",
         description: "Machine learning project using decision trees to analyze breast cancer data, featuring data preprocessing, model training, and accuracy evaluation.",
         tech: ["C++", "Machine Learning", "Data Analysis"],
-        image: "/images/Breast-cancer-awareness-month-Background-by-ojosujono96-scaled.webp",
+        image: `${import.meta.env.BASE_URL}images/Breast-cancer-awareness-month-Background-by-ojosujono96-scaled.webp`,
         github: "https://github.com/Youssefrajeh/BreastCancerDecisionTree",
         category: "cpp"
     },
@@ -15,7 +15,7 @@ const projects = [
         title: "FileUsage Analyzer",
         description: "Command-line utility built in C++ to analyze file system usage, providing detailed statistics and helping optimize storage management.",
         tech: ["C++", "File Systems", "CLI"],
-        image: "/images/N1-0921-Windows-CMD-Commands-You-Need-to-Know-blog-image-2.webp",
+        image: `${import.meta.env.BASE_URL}images/N1-0921-Windows-CMD-Commands-You-Need-to-Know-blog-image-2.webp`,
         github: "https://github.com/Youssefrajeh/fileusage",
         category: "cpp"
     },
@@ -23,7 +23,7 @@ const projects = [
         title: "Newcomb-Benford Statistics",
         description: "Statistical analysis tool implementing Benford's Law to detect fraud and anomalies in numerical data sets using C++ algorithms.",
         tech: ["C++", "Statistics", "Fraud Detection"],
-        image: "/images/Benfords_law_frequencies.webp",
+        image: `${import.meta.env.BASE_URL}images/Benfords_law_frequencies.webp`,
         github: "https://github.com/Youssefrajeh/nbstats",
         category: "cpp"
     },
@@ -31,7 +31,7 @@ const projects = [
         title: "Expression Evaluator",
         description: "Mathematical expression parser and evaluator built in C++ using advanced algorithms for handling complex mathematical operations.",
         tech: ["C++", "Algorithms", "Parser"],
-        image: "/images/0205_Stork_scripting_language_Pt2_Lina_Newsletter___blog.png",
+        image: `${import.meta.env.BASE_URL}images/0205_Stork_scripting_language_Pt2_Lina_Newsletter___blog.png`,
         github: "https://github.com/Youssefrajeh/Expression-Evaluator",
         category: "cpp"
     },
@@ -39,7 +39,7 @@ const projects = [
         title: "XO Game",
         description: "Interactive Tic-Tac-Toe game built with HTML, CSS, and JavaScript featuring responsive design and smooth animations.",
         tech: ["HTML", "CSS", "JavaScript"],
-        image: "/images/xo.png",
+        image: `${import.meta.env.BASE_URL}images/xo.png`,
         github: "https://github.com/Youssefrajeh/XO",
         category: "web"
     },
@@ -47,7 +47,7 @@ const projects = [
         title: "Prayer Times",
         description: "Web application providing accurate prayer times based on location with beautiful UI and real-time updates for Muslims worldwide.",
         tech: ["JavaScript", "API", "Geolocation"],
-        image: "/images/prayertime.jpg",
+        image: `${import.meta.env.BASE_URL}images/prayertime.jpg`,
         github: "https://github.com/Youssefrajeh/Prayer-Times",
         category: "web"
     },
@@ -55,7 +55,7 @@ const projects = [
         title: "Microwave Simulator",
         description: "Java application simulating microwave oven functionality with GUI, timer controls, and realistic cooking operations.",
         tech: ["Java", "Swing", "GUI"],
-        image: "/images/microwave.jpg",
+        image: `${import.meta.env.BASE_URL}images/microwave.jpg`,
         github: "https://github.com/Youssefrajeh/Microwave",
         category: "java"
     },
@@ -63,7 +63,7 @@ const projects = [
         title: "Android Assignment",
         description: "Native Android application built with Kotlin featuring modern UI components, user interactions, and following Android development best practices.",
         tech: ["Kotlin", "Android", "Mobile"],
-        image: "/images/android.png",
+        image: `${import.meta.env.BASE_URL}images/android.png`,
         github: "https://github.com/Youssefrajeh/AndroidAssignment",
         category: "mobile"
     },
@@ -71,7 +71,7 @@ const projects = [
         title: "Grades Tracking System",
         description: "JSON-based grade tracking system with C# console application featuring data validation, course management, evaluation tracking, and automated grade calculations.",
         tech: ["C#", ".NET", "JSON"],
-        image: "/images/grades_tracking.png",
+        image: `${import.meta.env.BASE_URL}images/grades_tracking.png`,
         github: "https://github.com/Youssefrajeh/Grades-Tracking-System",
         category: "csharp"
     },
@@ -79,7 +79,7 @@ const projects = [
         title: "Full Stack Application",
         description: "Complete full-stack web application featuring frontend and backend integration, database management, user authentication, and modern development practices.",
         tech: ["React", "Node.js", "MongoDB"],
-        image: "/images/fullStack.png",
+        image: `${import.meta.env.BASE_URL}images/fullStack.png`,
         github: "https://github.com/Youssefrajeh/Full_Satck",
         category: "fullstack"
     },

@@ -49,7 +49,7 @@ const Skills: React.FC = () => {
     return (
         <section id="skills" className="py-20 bg-dark-950 relative overflow-hidden">
             {/* Background decoration */}
-            <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
+            <div className={`absolute inset-0 bg-[url('${import.meta.env.BASE_URL}grid.svg')] opacity-10`}></div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <motion.div
