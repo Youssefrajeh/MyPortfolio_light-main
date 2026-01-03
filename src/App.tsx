@@ -1,28 +1,39 @@
-import Navbar from './components/Navbar';
-import Hero from './sections/Hero';
-
-import About from './sections/About';
-import Experience from './sections/Experience';
-import Skills from './sections/Skills';
-import Projects from './sections/Projects';
-import Contact from './sections/Contact';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
+import Portfolio from './pages/Portfolio';
+import Login from './pages/Login';
+import Library from './pages/Library';
+import AdminDashboard from './pages/AdminDashboard';
+import OAuthCallback from './pages/OAuthCallback';
 
 function App() {
   return (
-    <div className="bg-dark-900 min-h-screen text-slate-100">
-      <Navbar />
-      <main>
-        <Hero />
-        <About />
-        <Experience />
-        <Skills />
-        <Projects />
-        <Contact />
-      </main>
-      <footer className="bg-dark-950 py-8 text-center text-slate-500 text-sm">
-        <p>© {new Date().getFullYear()} Youssef Rajeh. All rights reserved.</p>
-      </footer>
-    </div>
+    <Router>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<Portfolio />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/oauth-callback" element={<OAuthCallback />} />
+          <Route
+            path="/library"
+            element={
+              <ProtectedRoute>
+                <Library />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </AuthProvider>
+    </Router>
   );
 }
 
