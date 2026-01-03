@@ -33,7 +33,10 @@ try {
 }
 
 // Security middleware
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginEmbedderPolicy: false,
+}));
 
 // Enable trust proxy for Render/Heroku (required for rate limiting)
 app.set('trust proxy', 1);
