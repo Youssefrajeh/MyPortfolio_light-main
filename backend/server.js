@@ -35,6 +35,9 @@ try {
 // Security middleware
 app.use(helmet());
 
+// Enable trust proxy for Render/Heroku (required for rate limiting)
+app.set('trust proxy', 1);
+
 // CORS configuration
 app.use(
   cors({
