@@ -47,6 +47,8 @@ const AdminDashboard: React.FC = () => {
     coverImageUrl: '',
   });
 
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
   useEffect(() => {
     fetchBooks();
   }, []);
@@ -103,10 +105,30 @@ const AdminDashboard: React.FC = () => {
         coverImageUrl: formData.coverImageUrl || null,
       };
 
+      let bookId;
       if (editingBook) {
         await axios.put(`${API_URL}/books/${editingBook.id}`, bookData);
+        bookId = editingBook.id;
       } else {
-        await axios.post(`${API_URL}/books`, bookData);
+        const response = await axios.post(`${API_URL}/books`, bookData);
+        bookId = response.data.book.id;
+      }
+
+      // Handle file upload if a file is selected
+      if (selectedFile && bookId) {
+        const fileFormData = new FormData();
+        fileFormData.append('file', selectedFile);
+        
+        try {
+          await axios.post(`${API_URL}/files/book/${bookId}/upload`, fileFormData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+        } catch (uploadError) {
+          console.error('File upload failed:', uploadError);
+          alert('Book saved, but file upload failed. Please try adding the file again.');
+        }
       }
 
       await fetchBooks();
@@ -153,6 +175,7 @@ const AdminDashboard: React.FC = () => {
       publicationYear: '',
       coverImageUrl: '',
     });
+    setSelectedFile(null);
     setEditingBook(null);
     setShowForm(false);
   };
@@ -356,6 +379,29 @@ const AdminDashboard: React.FC = () => {
                   onChange={(e) => setFormData({ ...formData, coverImageUrl: e.target.value })}
                   className="w-full px-4 py-2 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary"
                 />
+              </div>
+
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  Book File (PDF, DOC/DOCX, Image)
+                </label>
+                <div className="relative">
+                  <input
+                    type="file"
+                    accept=".pdf,.doc,.docx,image/*"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        setSelectedFile(e.target.files[0]);
+                      }
+                    }}
+                    className="w-full px-4 py-2 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary/90"
+                  />
+                  {selectedFile && (
+                     <p className="mt-2 text-sm text-green-400">
+                      Selected: {selectedFile.name}
+                     </p>
+                  )}
+                </div>
               </div>
 
               <div className="md:col-span-2 flex gap-4">
