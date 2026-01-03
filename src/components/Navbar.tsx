@@ -68,17 +68,8 @@ const Navbar: React.FC = () => {
               </div>
             ) : null}
 
-            {/* Library Link */}
-            <Link
-              to="/library"
-              className="text-slate-300 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 hover:tracking-wider hover:scale-110 transform relative group hover:shadow-[0_0_20px_rgba(96,165,250,0.5)] hover:bg-primary/10"
-            >
-              📚 Library
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full group-hover:shadow-[0_0_10px_rgba(96,165,250,0.8)]"></span>
-            </Link>
-
             {/* User Menu */}
-            {user ? (
+            {user && (
               <div className="flex items-center gap-4">
                 <span className="text-slate-400 text-sm">
                   {user.username}
@@ -90,13 +81,6 @@ const Navbar: React.FC = () => {
                   Logout
                 </button>
               </div>
-            ) : (
-              <Link
-                to="/login"
-                className="px-4 py-2 bg-primary/20 hover:bg-primary/30 text-primary rounded-md text-sm font-medium transition-all duration-300"
-              >
-                Login
-              </Link>
             )}
           </div>
 
@@ -130,15 +114,7 @@ const Navbar: React.FC = () => {
               </a>
             ))}
             
-            <Link
-              to="/library"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block text-slate-300 hover:text-primary hover:bg-primary/10 px-3 py-2 rounded-md text-base font-medium transition-all"
-            >
-              📚 Library
-            </Link>
-
-            {user ? (
+            {user && (
               <>
                 <div className="px-3 py-2 text-slate-400 text-sm">
                   {user.username}
@@ -150,14 +126,6 @@ const Navbar: React.FC = () => {
                   Logout
                 </button>
               </>
-            ) : (
-              <Link
-                to="/login"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2 bg-primary/20 hover:bg-primary/30 text-primary rounded-md text-base font-medium transition-all"
-              >
-                Login
-              </Link>
             )}
           </div>
         )}

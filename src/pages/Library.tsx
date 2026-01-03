@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
 import { useAuth } from '../contexts/AuthContext';
+import Login from './Login';
 
 const API_URL = import.meta.env.PROD 
   ? 'https://myportfolio-light-main.onrender.com/api'
@@ -22,7 +23,19 @@ const Library: React.FC = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
+  
+  if (authLoading) {
+     return (
+       <div className="min-h-screen flex items-center justify-center bg-slate-900">
+         <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary"></div>
+       </div>
+     );
+  }
+
+  if (!user) {
+    return <Login />;
+  }
 
   useEffect(() => {
     fetchBooks();

@@ -15,14 +15,7 @@ function App() {
           <Route path="/" element={<Portfolio />} />
           <Route path="/login" element={<Login />} />
           <Route path="/oauth-callback" element={<OAuthCallback />} />
-          <Route
-            path="/library"
-            element={
-              <ProtectedRoute>
-                <Library />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/library" element={<Library />} />
           <Route
             path="/admin"
             element={
