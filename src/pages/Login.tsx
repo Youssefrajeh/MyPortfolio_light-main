@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
+const BACKEND_URL = import.meta.env.PROD
+  ? 'https://myportfolio-light-main.onrender.com'
+  : 'http://localhost:3001';
+
 const Login: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [username, setUsername] = useState('');
@@ -85,7 +89,7 @@ const Login: React.FC = () => {
           <div className="space-y-3 mb-6">
             <button
               type="button"
-              onClick={() => window.location.href = 'http://localhost:3001/api/auth/google'}
+              onClick={() => window.location.href = `${BACKEND_URL}/api/auth/google`}
               className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white hover:bg-gray-50 text-gray-700 rounded-lg border border-gray-300 transition-all duration-300 transform hover:scale-[1.02] shadow-md hover:shadow-lg"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -99,7 +103,7 @@ const Login: React.FC = () => {
 
             <button
               type="button"
-              onClick={() => window.location.href = 'http://localhost:3001/api/auth/github'}
+              onClick={() => window.location.href = `${BACKEND_URL}/api/auth/github`}
               className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-gray-900 hover:bg-gray-800 text-white rounded-lg transition-all duration-300 transform hover:scale-[1.02] shadow-md hover:shadow-lg"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -110,7 +114,7 @@ const Login: React.FC = () => {
 
             <button
               type="button"
-              onClick={() => window.location.href = 'http://localhost:3001/api/auth/microsoft'}
+              onClick={() => window.location.href = `${BACKEND_URL}/api/auth/microsoft`}
               className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all duration-300 transform hover:scale-[1.02] shadow-md hover:shadow-lg"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">

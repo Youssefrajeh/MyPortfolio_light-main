@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
 
-const API_URL = 'http://localhost:3001/api';
+const API_URL = import.meta.env.PROD 
+  ? 'https://myportfolio-light-main.onrender.com/api'
+  : 'http://localhost:3001/api';
 
 interface Book {
   id: number;
