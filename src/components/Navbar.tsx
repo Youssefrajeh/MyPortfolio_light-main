@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { Menu, X } from "lucide-react";
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, logout } = useAuth();
   const location = useLocation();
   const isPortfolioPage = location.pathname === '/';
@@ -27,6 +29,7 @@ const Navbar: React.FC = () => {
 
   const handleLogout = async () => {
     await logout();
+    setMobileMenuOpen(false);
   };
 
   return (
@@ -39,6 +42,7 @@ const Navbar: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
+          {/* Logo */}
           <div className="flex-shrink-0 transform transition-all duration-300 hover:scale-105">
             <Link to="/" className="flex items-center gap-3 group">
               <span className="text-xl font-bold text-white tracking-wide transition-all duration-300 hover:text-primary group-hover:drop-shadow-[0_0_15px_rgba(96,165,250,0.7)]">
@@ -47,7 +51,8 @@ const Navbar: React.FC = () => {
             </Link>
           </div>
 
-          <div className="flex items-center gap-6">
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-6">
             {isPortfolioPage ? (
               <div className="flex items-baseline space-x-8">
                 {portfolioLinks.map((link) => (
@@ -94,8 +99,68 @@ const Navbar: React.FC = () => {
               </Link>
             )}
           </div>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="text-slate-300 hover:text-primary p-2 rounded-md transition-colors"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </button>
+          </div>
         </div>
 
+        {/* Mobile Navigation */}
+        {mobileMenuOpen && (
+          <div className="md:hidden py-4 space-y-2 border-t border-slate-700/50 mt-2">
+            {isPortfolioPage && portfolioLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="block text-slate-300 hover:text-primary hover:bg-primary/10 px-3 py-2 rounded-md text-base font-medium transition-all"
+              >
+                {link.name}
+              </a>
+            ))}
+            
+            <Link
+              to="/library"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-slate-300 hover:text-primary hover:bg-primary/10 px-3 py-2 rounded-md text-base font-medium transition-all"
+            >
+              📚 Library
+            </Link>
+
+            {user ? (
+              <>
+                <div className="px-3 py-2 text-slate-400 text-sm">
+                  {user.username}
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left px-3 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-md text-base font-medium transition-all"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-3 py-2 bg-primary/20 hover:bg-primary/30 text-primary rounded-md text-base font-medium transition-all"
+              >
+                Login
+              </Link>
+            )}
+          </div>
+        )}
       </div>
     </nav>
   );
