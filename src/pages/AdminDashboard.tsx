@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
+import { useAuth } from '../contexts/AuthContext';
 
 const API_URL = import.meta.env.PROD 
   ? 'https://myportfolio-light-main.onrender.com/api'
@@ -22,8 +23,18 @@ const AdminDashboard: React.FC = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [showProfileSettings, setShowProfileSettings] = useState(false);
   const [editingBook, setEditingBook] = useState<Book | null>(null);
   const [uploading, setUploading] = useState(false);
+
+  const { user, updateUser } = useAuth();
+
+  // Profile form state
+  const [profileData, setProfileData] = useState({
+    username: user?.username || '',
+    password: '',
+    confirmPassword: '',
+  });
 
   // Form state
   const [formData, setFormData] = useState({
@@ -48,6 +59,32 @@ const AdminDashboard: React.FC = () => {
       console.error('Error fetching books:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleUpdateProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (profileData.password && profileData.password !== profileData.confirmPassword) {
+      alert("Passwords don't match");
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const response = await axios.put(`${API_URL}/auth/profile`, {
+        username: profileData.username,
+        password: profileData.password || undefined // Only send if set
+      });
+
+      updateUser(response.data.user);
+      alert('Profile updated successfully');
+      setShowProfileSettings(false);
+      setProfileData(prev => ({ ...prev, password: '', confirmPassword: '' }));
+    } catch (error: any) {
+      alert(error.response?.data?.error || 'Error updating profile');
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -146,8 +183,88 @@ const AdminDashboard: React.FC = () => {
             >
               {showForm ? 'Cancel' : '+ Add Book'}
             </button>
+            <button
+              onClick={() => {
+                setShowProfileSettings(!showProfileSettings);
+                setShowForm(false);
+                setProfileData({
+                  username: user?.username || '',
+                  password: '',
+                  confirmPassword: ''
+                });
+              }}
+              className="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white font-medium rounded-lg transition-all"
+            >
+              {showProfileSettings ? 'Close Settings' : 'Profile Settings'}
+            </button>
           </div>
         </div>
+
+        {/* Profile Settings Form */}
+        {showProfileSettings && (
+          <div className="bg-slate-800/50 backdrop-blur-lg rounded-xl p-6 border border-slate-700/50 mb-8 max-w-2xl mx-auto">
+            <h2 className="text-2xl font-bold text-white mb-6">
+              Update Profile
+            </h2>
+            <form onSubmit={handleUpdateProfile} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  Username
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={profileData.username}
+                  onChange={(e) => setProfileData({ ...profileData, username: e.target.value })}
+                  className="w-full px-4 py-2 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  New Password (leave blank to keep current)
+                </label>
+                <input
+                  type="password"
+                  minLength={8}
+                  value={profileData.password}
+                  onChange={(e) => setProfileData({ ...profileData, password: e.target.value })}
+                  className="w-full px-4 py-2 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  Confirm New Password
+                </label>
+                <input
+                  type="password"
+                  minLength={8}
+                  value={profileData.confirmPassword}
+                  onChange={(e) => setProfileData({ ...profileData, confirmPassword: e.target.value })}
+                  className="w-full px-4 py-2 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+              </div>
+
+              <div className="flex gap-4 pt-4">
+                <button
+                  type="submit"
+                  disabled={uploading}
+                  className="flex-1 py-3 bg-primary hover:bg-primary/90 text-white font-medium rounded-lg shadow-lg shadow-primary/50 transition-all disabled:opacity-50"
+                >
+                  {uploading ? 'Updating...' : 'Save Changes'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowProfileSettings(false)}
+                  className="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white font-medium rounded-lg transition-all"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
 
         {/* Add/Edit Form */}
         {showForm && (

@@ -8,6 +8,7 @@ import {
   logout,
   getCurrentUser,
   verifySession,
+  updateProfile,
 } from '../controllers/authController.js';
 
 const router = express.Router();
@@ -19,6 +20,7 @@ router.post('/logout', logout);
 
 // Protected routes
 router.get('/me', verifySession, getCurrentUser);
+router.put('/profile', verifySession, updateProfile);
 
 // OAuth routes - Google
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));

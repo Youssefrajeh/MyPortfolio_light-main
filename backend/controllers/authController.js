@@ -201,3 +201,56 @@ export const requireAdmin = (req, res, next) => {
   }
   next();
 };
+// Update user profile
+export const updateProfile = async (req, res) => {
+  const { username, password } = req.body;
+  const userId = req.user.id;
+
+  if (!username) {
+    return res.status(400).json({ error: 'Username is required' });
+  }
+
+  try {
+    // Check if new username is taken by another user
+    const existingUser = await query(
+      'SELECT id FROM users WHERE username = $1 AND id != $2',
+      [username, userId]
+    );
+
+    if (existingUser.rows.length > 0) {
+      return res.status(409).json({ error: 'Username already taken' });
+    }
+
+    let queryText;
+    let queryParams;
+
+    if (password) {
+      if (password.length < 8) {
+        return res.status(400).json({ error: 'Password must be at least 8 characters long' });
+      }
+      const passwordHash = await bcrypt.hash(password, BCRYPT_ROUNDS);
+      queryText = 'UPDATE users SET username = $1, password_hash = $2 WHERE id = $3 RETURNING id, username, email, full_name, role';
+      queryParams = [username, passwordHash, userId];
+    } else {
+      queryText = 'UPDATE users SET username = $1 WHERE id = $2 RETURNING id, username, email, full_name, role';
+      queryParams = [username, userId];
+    }
+
+    const result = await query(queryText, queryParams);
+    const user = result.rows[0];
+
+    res.json({
+      message: 'Profile updated successfully',
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        fullName: user.full_name,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    console.error('Update profile error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
